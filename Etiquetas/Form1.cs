@@ -23,6 +23,8 @@ namespace Etiquetas
         int status;
         Paciente detiq;
         Paciente detiq2;
+
+       
         //HospubDados dados = new HospubDados();
         //string conStr = "DSN=hospub-server;Uid=;Pwd=;";//string de conexão com o banco de dados
 
@@ -46,6 +48,7 @@ namespace Etiquetas
             public string dt_data_nascimento { get; set; }
             public int nr_idade { get; set; }
             public string Bmr { get; set; }
+          
             
         }
         private void btImprimir_Click(object sender, EventArgs e)
@@ -58,7 +61,7 @@ namespace Etiquetas
         }
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-           btImprimir.Enabled = true;
+           this.btImprimir.Enabled = true;
             if (status == 1)
                 lblError.Text = error;
             else
@@ -67,6 +70,8 @@ namespace Etiquetas
             this.txbRh.Enabled = true;
             this.txbRh.Focus();
             this.txbRh.Text = "";
+            this.cbExame.ResetText();
+            this.cbClinica.ResetText();
          
         }
 
@@ -74,6 +79,7 @@ namespace Etiquetas
         {
             try
             {
+              
 
                 int rh = Convert.ToInt32(txbRh.Text);
                 //detiq = dados.getDados(be);
@@ -88,6 +94,7 @@ namespace Etiquetas
                             JsonSerializer json = new JsonSerializer();
                             var objText = reader.ReadToEnd();
                             detiq = JsonConvert.DeserializeObject<Paciente>(objText);
+                         
 
                         }
                     }
@@ -115,9 +122,7 @@ namespace Etiquetas
 
                             }
                             printDocument1.Print();
-                            txbAndar.Text = "";
-                            txbQuarto.Text = "";
-                            txbLeito.Text = "";
+                            
 
 
                         }
@@ -168,8 +173,28 @@ namespace Etiquetas
 
         private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
-            DateTime data = DateTime.Now;
+            string Clinica = "";
+            if (cbClinica.InvokeRequired)
+            {
+                cbClinica.Invoke(new MethodInvoker(delegate { Clinica = cbClinica.Text; }));
+            }
+            string Exame = "";
+            if (cbExame.InvokeRequired)
+            {
+                cbClinica.Invoke(new MethodInvoker(delegate { Exame = cbExame.Text; }));
+            }
+
+         
+            DateTime dataTempo = DateTime.Now;
+            String dataNormal = dataTempo.ToShortDateString();
+            String [] data = dataTempo.ToShortDateString().Split('/');
+            String strData = data[2] + data[1] + data[0];
+            String[] tempo = dataTempo.ToLongTimeString().Split(':');
+            String strTempo = tempo[0] + tempo[1] + tempo[2];
+             String codigo = strData + strTempo;
             string bmr = detiq.Bmr;
+
+       
             if (bmr == "MDR")
             {
                 MessageBox.Show("Atenção! Paciente com RH: " + txbRh.Text + " identificado com MDR.");
@@ -198,8 +223,8 @@ namespace Etiquetas
                             int contN = nomep1.Length;
                             string nomep = detiq.nm_nome.Substring(0, 26);
                             string nomeCompos = nomep1.Substring(26);
-                            
 
+                            
                             if (bmr == "MDR")
                             {
                                 g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula + "     " + bmr , new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
@@ -213,13 +238,13 @@ namespace Etiquetas
                             g.DrawString("            " + nomeCompos, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
                             g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
                             g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            if (txbAndar.Text == "")
-                            g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            else if ( txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            if (Exame.Equals(""))
+                            g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                           
                             else 
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " +txbLeito.Text , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal  , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
 
                             starty += pulaEtiq;
 
@@ -237,14 +262,13 @@ namespace Etiquetas
                             g.DrawString("            " + nomeCompos, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
                             g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
                             g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            else if (txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                           
                             else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
-
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
                             starty += pulaEtiq;
 
                             //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
@@ -261,14 +285,13 @@ namespace Etiquetas
                             g.DrawString("            " + nomeCompos, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
                             g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
                             g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            else if (txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                          
                             else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
-
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
                             starty += pulaEtiq;
 
                             //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
@@ -285,14 +308,14 @@ namespace Etiquetas
                             g.DrawString("            " + nomeCompos, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
                             g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
                             g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            else if (txbAndar.Text == "Leito Extra")
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            else if (Exame == "Leito Extra")
                                 g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
                             else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
-
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
                             starty += pulaEtiq;
 
                             //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
@@ -309,14 +332,13 @@ namespace Etiquetas
                             g.DrawString("            " + nomeCompos, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
                             g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
                             g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            else if (txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                         
                             else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
-
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
                             starty += pulaEtiq;
 
                             //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
@@ -333,13 +355,14 @@ namespace Etiquetas
                             g.DrawString("            " + nomeCompos, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
                             g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
                             g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            else if (txbAndar.Text == "Leito Extra")
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            else if (Exame == "Leito Extra")
                                 g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
                             else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
 
                         }
                         else
@@ -357,14 +380,13 @@ namespace Etiquetas
                             g.DrawString("Nome: " + detiq.nm_nome, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 24);
                             g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
                             g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            else if (txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                         
                             else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
                             starty += pulaEtiq;
 
                             //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 6);
@@ -380,14 +402,13 @@ namespace Etiquetas
                             g.DrawString("Nome: " + detiq.nm_nome, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 24);
                             g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
                             g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            else if (txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                         
                             else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
                             starty += pulaEtiq;
 
                             //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 6);
@@ -403,14 +424,13 @@ namespace Etiquetas
                             g.DrawString("Nome: " + detiq.nm_nome, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 24);
                             g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
                             g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            else if (txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                          
                             else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
                             starty += pulaEtiq;
 
                             //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 6);
@@ -426,14 +446,13 @@ namespace Etiquetas
                             g.DrawString("Nome: " + detiq.nm_nome, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 24);
                             g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
                             g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            else if (txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                       
                             else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
                             starty += pulaEtiq;
 
                             //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 6);
@@ -449,14 +468,13 @@ namespace Etiquetas
                             g.DrawString("Nome: " + detiq.nm_nome, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 24);
                             g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
                             g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            else if (txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                         
                             else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
                             starty += pulaEtiq;
 
                             //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 6);
@@ -472,13 +490,13 @@ namespace Etiquetas
                             g.DrawString("Nome: " + detiq.nm_nome, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 24);
                             g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
                             g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            else if (txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                          
                             else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
                         }
                     }
                 }
@@ -521,13 +539,14 @@ namespace Etiquetas
                             g.DrawString("            " + nomeCompos, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
                             g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
                             g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            else if (txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                         
                             else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
 
                             starty += pulaEtiq;
 
@@ -545,13 +564,37 @@ namespace Etiquetas
                             g.DrawString("            " + nomeCompos, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
                             g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
                             g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            else if (txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                           
                             else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                           
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
+                            starty += pulaEtiq;
+
+                            //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
+                            if (bmr == "MDR")
+                            {
+                                g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula + "     " + bmr, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
+                            }
+                            else
+                            {
+                                g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
+
+                            } 
+                            g.DrawString("Nome: " + nomep, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 24);
+                            g.DrawString("            " + nomeCompos, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
+                            g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
+                            g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                         
+                            else
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
 
                             starty += pulaEtiq;
 
@@ -569,13 +612,84 @@ namespace Etiquetas
                             g.DrawString("            " + nomeCompos, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
                             g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
                             g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            else if (txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                           
                             else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                      
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
+                            starty += pulaEtiq;
+
+                            //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
+                            if (bmr == "MDR")
+                            {
+                                g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula + "     " + bmr, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
+                            }
+                            else
+                            {
+                                g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
+
+                            } 
+                            g.DrawString("Nome: " + nomep, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 24);
+                            g.DrawString("            " + nomeCompos, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
+                            g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
+                            g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            
+                            else
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
+                            starty += pulaEtiq;
+
+                            //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
+                            if (bmr == "MDR")
+                            {
+                                g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula + "     " + bmr, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
+                            }
+                            else
+                            {
+                                g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
+
+                            } 
+                            g.DrawString("Nome: " + nomep, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 24);
+                            g.DrawString("            " + nomeCompos, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
+                            g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
+                            g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                          
+                            else
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
+                            starty += pulaEtiq;
+
+                            //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
+                            if (bmr == "MDR")
+                            {
+                                g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula + "     " + bmr, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
+                            }
+                            else
+                            {
+                                g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
+
+                            } 
+                            g.DrawString("Nome: " + nomep, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 24);
+                            g.DrawString("            " + nomeCompos, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
+                            g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
+                            g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                          
+                            else
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
 
                             starty += pulaEtiq;
 
@@ -593,110 +707,13 @@ namespace Etiquetas
                             g.DrawString("            " + nomeCompos, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
                             g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
                             g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            else if (txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                          
                             else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
-
-                            starty += pulaEtiq;
-
-                            //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
-                            if (bmr == "MDR")
-                            {
-                                g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula + "     " + bmr, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
-                            }
-                            else
-                            {
-                                g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
-
-                            } 
-                            g.DrawString("Nome: " + nomep, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 24);
-                            g.DrawString("            " + nomeCompos, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
-                            g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
-                            g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            else if (txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
-
-                            starty += pulaEtiq;
-
-                            //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
-                            if (bmr == "MDR")
-                            {
-                                g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula + "     " + bmr, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
-                            }
-                            else
-                            {
-                                g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
-
-                            } 
-                            g.DrawString("Nome: " + nomep, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 24);
-                            g.DrawString("            " + nomeCompos, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
-                            g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
-                            g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            else if (txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
-
-                            starty += pulaEtiq;
-
-                            //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
-                            if (bmr == "MDR")
-                            {
-                                g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula + "     " + bmr, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
-                            }
-                            else
-                            {
-                                g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
-
-                            } 
-                            g.DrawString("Nome: " + nomep, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 24);
-                            g.DrawString("            " + nomeCompos, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
-                            g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
-                            g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            else if (txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
-
-                            starty += pulaEtiq;
-
-                            //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
-                            if (bmr == "MDR")
-                            {
-                                g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula + "     " + bmr, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
-                            }
-                            else
-                            {
-                                g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 7);
-
-                            } 
-                            g.DrawString("Nome: " + nomep, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 24);
-                            g.DrawString("            " + nomeCompos, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
-                            g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
-                            g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            else if (txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
-
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
 
                         }
                         else
@@ -715,14 +732,13 @@ namespace Etiquetas
                             g.DrawString("Nome: " + detiq.nm_nome, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 24);
                             g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
                             g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            else if (txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                           
                             else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
                             starty += pulaEtiq;
 
                             //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 6);
@@ -738,14 +754,14 @@ namespace Etiquetas
                             g.DrawString("Nome: " + detiq.nm_nome, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 24);
                             g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
                             g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            else if (txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            
                             else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
                             g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
                             starty += pulaEtiq;
 
                             //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 6);
@@ -761,14 +777,13 @@ namespace Etiquetas
                             g.DrawString("Nome: " + detiq.nm_nome, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 24);
                             g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
                             g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            else if (txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                           
                             else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
                             starty += pulaEtiq;
 
                             //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 6);
@@ -784,14 +799,13 @@ namespace Etiquetas
                             g.DrawString("Nome: " + detiq.nm_nome, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 24);
                             g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
                             g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            else if (txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            
                             else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
                             starty += pulaEtiq;
 
                             //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 6);
@@ -807,14 +821,13 @@ namespace Etiquetas
                             g.DrawString("Nome: " + detiq.nm_nome, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 24);
                             g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
                             g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            else if (txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                           
                             else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
                             starty += pulaEtiq;
 
                             //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 6);
@@ -830,14 +843,13 @@ namespace Etiquetas
                             g.DrawString("Nome: " + detiq.nm_nome, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 24);
                             g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
                             g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            else if (txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                           
                             else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
                             starty += pulaEtiq;
 
                             //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 6);
@@ -853,14 +865,13 @@ namespace Etiquetas
                             g.DrawString("Nome: " + detiq.nm_nome, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 24);
                             g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
                             g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            else if (txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            
                             else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
                             starty += pulaEtiq;
 
                             //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 6);
@@ -876,14 +887,13 @@ namespace Etiquetas
                             g.DrawString("Nome: " + detiq.nm_nome, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 24);
                             g.DrawString("Nasc: " + detiq.dt_data_nascimento + " Idade: " + detiq.nr_idade + " Sexo: " + detiq.in_sexo, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 40);
                             g.DrawString("Mãe: " + detiq.nm_mae, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 56);
-                            if (txbAndar.Text == "")
-                                g.DrawString("Andar:____ Quarto:____ Leito:____ ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            else if (txbAndar.Text == "Leito Extra")
-                                g.DrawString("Leito Extra ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            if (Exame.Equals(""))
+                                g.DrawString("Pedido:____ Data:____  ", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                           
                             else
-                                g.DrawString("Andar: " + txbAndar.Text + " Quarto: " + txbQuarto.Text + " Leito: " + txbLeito.Text, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-
+                                g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
                         }
                     }
                 }

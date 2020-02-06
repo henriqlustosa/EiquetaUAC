@@ -39,11 +39,9 @@
             this.rbEtiqueta_6 = new System.Windows.Forms.RadioButton();
             this.rbEtiqueta_8 = new System.Windows.Forms.RadioButton();
             this.lbQuarto = new System.Windows.Forms.Label();
-            this.txbQuarto = new System.Windows.Forms.TextBox();
-            this.lbLeito = new System.Windows.Forms.Label();
-            this.txbLeito = new System.Windows.Forms.TextBox();
             this.lbAndar = new System.Windows.Forms.Label();
-            this.txbAndar = new System.Windows.Forms.TextBox();
+            this.cbExame = new System.Windows.Forms.ComboBox();
+            this.cbClinica = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // btImprimir
@@ -128,61 +126,94 @@
             // lbQuarto
             // 
             this.lbQuarto.AutoSize = true;
-            this.lbQuarto.Location = new System.Drawing.Point(189, 125);
+            this.lbQuarto.Location = new System.Drawing.Point(31, 135);
             this.lbQuarto.Name = "lbQuarto";
-            this.lbQuarto.Size = new System.Drawing.Size(39, 13);
+            this.lbQuarto.Size = new System.Drawing.Size(38, 13);
             this.lbQuarto.TabIndex = 10;
-            this.lbQuarto.Text = "Quarto";
-            // 
-            // txbQuarto
-            // 
-            this.txbQuarto.Location = new System.Drawing.Point(242, 122);
-            this.txbQuarto.Name = "txbQuarto";
-            this.txbQuarto.Size = new System.Drawing.Size(50, 20);
-            this.txbQuarto.TabIndex = 3;
-            // 
-            // lbLeito
-            // 
-            this.lbLeito.AutoSize = true;
-            this.lbLeito.Location = new System.Drawing.Point(334, 125);
-            this.lbLeito.Name = "lbLeito";
-            this.lbLeito.Size = new System.Drawing.Size(30, 13);
-            this.lbLeito.TabIndex = 12;
-            this.lbLeito.Text = "Leito";
-            // 
-            // txbLeito
-            // 
-            this.txbLeito.Location = new System.Drawing.Point(386, 122);
-            this.txbLeito.Name = "txbLeito";
-            this.txbLeito.Size = new System.Drawing.Size(51, 20);
-            this.txbLeito.TabIndex = 4;
+            this.lbQuarto.Text = "Clinica";
             // 
             // lbAndar
             // 
             this.lbAndar.AutoSize = true;
-            this.lbAndar.Location = new System.Drawing.Point(33, 125);
+            this.lbAndar.Location = new System.Drawing.Point(239, 135);
             this.lbAndar.Name = "lbAndar";
-            this.lbAndar.Size = new System.Drawing.Size(35, 13);
+            this.lbAndar.Size = new System.Drawing.Size(39, 13);
             this.lbAndar.TabIndex = 14;
-            this.lbAndar.Text = "Andar";
+            this.lbAndar.Text = "Exame";
             // 
-            // txbAndar
+            // cbExame
             // 
-            this.txbAndar.Location = new System.Drawing.Point(90, 122);
-            this.txbAndar.Name = "txbAndar";
-            this.txbAndar.Size = new System.Drawing.Size(65, 20);
-            this.txbAndar.TabIndex = 2;
+            this.cbExame.FormattingEnabled = true;
+            this.cbExame.Items.AddRange(new object[] {
+            "ELETRONEUROMIOGRAFIA",
+            "ELETROENCEFALOGRAMA",
+            "ENDOSCOPIA",
+            "COLONOSCOPIA",
+            "RADIOLOGIA INTERVENCIONISTA",
+            "CIRURGIA VASCULAR",
+            "CATETERISMO CARDÍACO",
+            "ULTRASSOM COM PUNÇÃO"});
+            this.cbExame.Location = new System.Drawing.Point(301, 127);
+            this.cbExame.Name = "cbExame";
+            this.cbExame.Size = new System.Drawing.Size(121, 21);
+            this.cbExame.TabIndex = 15;
+            // 
+            // cbClinica
+            // 
+            this.cbClinica.FormattingEnabled = true;
+            this.cbClinica.Items.AddRange(new object[] {
+            " Pronto Socorro Adulto ",
+            "Acupuntura",
+            "Alergia ",
+            "Amb. Desc. Carrão",
+            "Amb. Desc. Lapa",
+            "Amb. Desc. Santo Amaro",
+            "Amb. Desc. São Miguel",
+            "Amb. Desc. Tucuruvi",
+            "Berçário e UTI Neonatal",
+            "Buco Maxilo Facial",
+            "Cardiologia",
+            "Cir.Cabeça e Pescoço ",
+            "Cirurgia Pediátrica",
+            "Cirurgia Plástica",
+            "Cirurgia Torácica ",
+            "Cirurgia Vascular",
+            "Clínica Médica",
+            "Dermatologia",
+            "Endoscopia",
+            "Endocrinologia",
+            "Fisiatria ",
+            "Fisioterapia",
+            "Fonoaudiologia",
+            "Gastrocirurgia",
+            "Gastroclínica",
+            "Geriatria",
+            "Ginecologia",
+            "Hematologia",
+            "Molestias Infecciosas",
+            "Nefrologia",
+            "Neurocirurgia ",
+            "Neuroclínica",
+            "Obstetrícia",
+            "Odontologia",
+            "Oftalmologia",
+            "Oncologia",
+            "Ortopedia ",
+            "Otorrinolaringologia",
+            "Pediatria, PSI e UTI Pediátrica"});
+            this.cbClinica.Location = new System.Drawing.Point(80, 127);
+            this.cbClinica.Name = "cbClinica";
+            this.cbClinica.Size = new System.Drawing.Size(121, 21);
+            this.cbClinica.TabIndex = 16;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(482, 269);
-            this.Controls.Add(this.txbAndar);
+            this.Controls.Add(this.cbClinica);
+            this.Controls.Add(this.cbExame);
             this.Controls.Add(this.lbAndar);
-            this.Controls.Add(this.txbLeito);
-            this.Controls.Add(this.lbLeito);
-            this.Controls.Add(this.txbQuarto);
             this.Controls.Add(this.lbQuarto);
             this.Controls.Add(this.rbEtiqueta_8);
             this.Controls.Add(this.rbEtiqueta_6);
@@ -211,11 +242,9 @@
         private System.Windows.Forms.RadioButton rbEtiqueta_6;
         private System.Windows.Forms.RadioButton rbEtiqueta_8;
         private System.Windows.Forms.Label lbQuarto;
-        private System.Windows.Forms.TextBox txbQuarto;
-        private System.Windows.Forms.Label lbLeito;
-        private System.Windows.Forms.TextBox txbLeito;
         private System.Windows.Forms.Label lbAndar;
-        private System.Windows.Forms.TextBox txbAndar;
+        private System.Windows.Forms.ComboBox cbExame;
+        private System.Windows.Forms.ComboBox cbClinica;
 
     }
 }
