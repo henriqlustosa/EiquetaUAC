@@ -95,11 +95,11 @@
             // 
             this.lbTitulo.AutoSize = true;
             this.lbTitulo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbTitulo.Location = new System.Drawing.Point(104, 22);
+            this.lbTitulo.Location = new System.Drawing.Point(105, 22);
             this.lbTitulo.Name = "lbTitulo";
-            this.lbTitulo.Size = new System.Drawing.Size(242, 20);
+            this.lbTitulo.Size = new System.Drawing.Size(222, 20);
             this.lbTitulo.TabIndex = 0;
-            this.lbTitulo.Text = "Sistema de Etiquetas Internação";
+            this.lbTitulo.Text = "Sistema de Etiquetas Exames";
             // 
             // rbEtiqueta_6
             // 
@@ -135,7 +135,7 @@
             // lbAndar
             // 
             this.lbAndar.AutoSize = true;
-            this.lbAndar.Location = new System.Drawing.Point(239, 135);
+            this.lbAndar.Location = new System.Drawing.Point(380, 135);
             this.lbAndar.Name = "lbAndar";
             this.lbAndar.Size = new System.Drawing.Size(39, 13);
             this.lbAndar.TabIndex = 14;
@@ -153,9 +153,9 @@
             "CIRURGIA VASCULAR",
             "CATETERISMO CARDÍACO",
             "ULTRASSOM COM PUNÇÃO"});
-            this.cbExame.Location = new System.Drawing.Point(301, 127);
+            this.cbExame.Location = new System.Drawing.Point(446, 127);
             this.cbExame.Name = "cbExame";
-            this.cbExame.Size = new System.Drawing.Size(121, 21);
+            this.cbExame.Size = new System.Drawing.Size(208, 21);
             this.cbExame.TabIndex = 15;
             // 
             // cbClinica
@@ -201,16 +201,16 @@
             "Ortopedia ",
             "Otorrinolaringologia",
             "Pediatria, PSI e UTI Pediátrica"});
-            this.cbClinica.Location = new System.Drawing.Point(80, 127);
+            this.cbClinica.Location = new System.Drawing.Point(124, 127);
             this.cbClinica.Name = "cbClinica";
-            this.cbClinica.Size = new System.Drawing.Size(121, 21);
+            this.cbClinica.Size = new System.Drawing.Size(228, 21);
             this.cbClinica.TabIndex = 16;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(482, 269);
+            this.ClientSize = new System.Drawing.Size(694, 269);
             this.Controls.Add(this.cbClinica);
             this.Controls.Add(this.cbExame);
             this.Controls.Add(this.lbAndar);

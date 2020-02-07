@@ -213,8 +213,8 @@ namespace Etiquetas
                     using (Font fnt = new Font("Arial", 12))
                     {
 
-                        int startXEsquerda = 50;
-                        int starty = 10;//distancia das linhas
+                        int startXEsquerda = 5;
+                        int starty = -5;//distancia das linhas
                         int pulaEtiq = 167;
                         
                         if (detiq.nm_nome.Length > 26)
@@ -512,8 +512,8 @@ namespace Etiquetas
                     using (Font fnt = new Font("Arial", 12))
                     {
 
-                        int startXEsquerda = 40;
-                        int starty = 10;//distancia das linhas
+                        int startXEsquerda = 10;
+                        int starty = -7;//distancia das linhas
                         int pulaEtiq = 150;
                         
 
@@ -737,8 +737,8 @@ namespace Etiquetas
                            
                             else
                                 g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
-                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
                             starty += pulaEtiq;
 
                             //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 6);
@@ -759,9 +759,8 @@ namespace Etiquetas
                             
                             else
                                 g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            g.DrawString("", new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
-                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
-                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
                             starty += pulaEtiq;
 
                             //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 6);
@@ -782,8 +781,8 @@ namespace Etiquetas
                            
                             else
                                 g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
-                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
                             starty += pulaEtiq;
 
                             //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 6);
@@ -804,8 +803,8 @@ namespace Etiquetas
                             
                             else
                                 g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
-                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
                             starty += pulaEtiq;
 
                             //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 6);
@@ -826,8 +825,8 @@ namespace Etiquetas
                            
                             else
                                 g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
-                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
                             starty += pulaEtiq;
 
                             //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 6);
@@ -848,8 +847,8 @@ namespace Etiquetas
                            
                             else
                                 g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
-                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
                             starty += pulaEtiq;
 
                             //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 6);
@@ -870,8 +869,8 @@ namespace Etiquetas
                             
                             else
                                 g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
-                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
                             starty += pulaEtiq;
 
                             //g.DrawString("RH: " + txbRh.Text + "       RF: " + detiq.cd_rf_matricula, new Font("Arial", 10, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 6);
@@ -892,8 +891,8 @@ namespace Etiquetas
                            
                             else
                                 g.DrawString("Pedido: " + codigo + " Data: " + dataNormal , new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 72);
-                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
-                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 120);
+                            g.DrawString("Exame: " + Exame, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 88);
+                            g.DrawString("Clinica: " + Clinica, new Font("Arial", 10, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 104);
                         }
                     }
                 }

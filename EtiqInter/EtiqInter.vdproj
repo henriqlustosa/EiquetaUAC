@@ -3,7 +3,7 @@
 "VSVersion" = "3:800"
 "ProjectType" = "8:{978C614F-708E-4E1A-B201-565925725DBA}"
 "IsWebType" = "8:FALSE"
-"ProjectName" = "8:EtiqInter"
+"ProjectName" = "8:EtiqUAC"
 "LanguageId" = "3:1046"
 "CodePage" = "3:1252"
 "UILanguageId" = "3:1046"
@@ -15,7 +15,13 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_1268D7F6F4564CF8FF1AE5C1D86C9A40"
+        "MsmKey" = "8:_4D3A6437040447FE20B5256D8160D22B"
+        "OwnerKey" = "8:_F3E410556A1A4288A3393E98FACCB633"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5F821A52ACF161D5A0A5853AE5CE4B66"
         "OwnerKey" = "8:_F3E410556A1A4288A3393E98FACCB633"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -34,7 +40,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_1268D7F6F4564CF8FF1AE5C1D86C9A40"
+        "OwnerKey" = "8:_5F821A52ACF161D5A0A5853AE5CE4B66"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_4D3A6437040447FE20B5256D8160D22B"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -142,14 +154,45 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_1268D7F6F4564CF8FF1AE5C1D86C9A40"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4D3A6437040447FE20B5256D8160D22B"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json.Compact, Version=3.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_4D3A6437040447FE20B5256D8160D22B"
+                    {
+                    "Name" = "8:Newtonsoft.Json.Compact.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Newtonsoft.Json.Compact.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_FCF4AD485FCE438F93686F4740051FFC"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5F821A52ACF161D5A0A5853AE5CE4B66"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:GenCode128, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_1268D7F6F4564CF8FF1AE5C1D86C9A40"
+                    "_5F821A52ACF161D5A0A5853AE5CE4B66"
                     {
                     "Name" = "8:GenCode128.dll"
                     "Attributes" = "3:512"
@@ -230,7 +273,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:EtiqInter"
         "ProductCode" = "8:{DE1DF504-EC85-480C-B519-618DB2896B1D}"
-        "PackageCode" = "8:{BD8EF128-BFA8-4D75-9467-7B5A459ED871}"
+        "PackageCode" = "8:{9A25F861-1FBD-4C04-AB7B-38F5434C9E4F}"
         "UpgradeCode" = "8:{8E0D90AA-5C0F-449E-BC4A-15AC0DFFB65E}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
@@ -778,7 +821,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_F3E410556A1A4288A3393E98FACCB633"
             {
-            "SourcePath" = "8:..\\Etiquetas\\obj\\Release\\Etiquetas.exe"
+            "SourcePath" = "8:..\\Etiquetas\\obj\\x86\\Release\\Etiquetas.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_FCF4AD485FCE438F93686F4740051FFC"
