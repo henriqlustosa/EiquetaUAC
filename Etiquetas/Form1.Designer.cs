@@ -36,12 +36,12 @@
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.lblError = new System.Windows.Forms.Label();
             this.lbTitulo = new System.Windows.Forms.Label();
-            this.rbEtiqueta_6 = new System.Windows.Forms.RadioButton();
-            this.rbEtiqueta_8 = new System.Windows.Forms.RadioButton();
             this.lbQuarto = new System.Windows.Forms.Label();
             this.lbAndar = new System.Windows.Forms.Label();
             this.cbExame = new System.Windows.Forms.ComboBox();
             this.cbClinica = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.cbNumeroEtiquetas = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // btImprimir
@@ -100,28 +100,6 @@
             this.lbTitulo.Size = new System.Drawing.Size(222, 20);
             this.lbTitulo.TabIndex = 0;
             this.lbTitulo.Text = "Sistema de Etiquetas Exames";
-            // 
-            // rbEtiqueta_6
-            // 
-            this.rbEtiqueta_6.AutoSize = true;
-            this.rbEtiqueta_6.Location = new System.Drawing.Point(124, 183);
-            this.rbEtiqueta_6.Name = "rbEtiqueta_6";
-            this.rbEtiqueta_6.Size = new System.Drawing.Size(77, 17);
-            this.rbEtiqueta_6.TabIndex = 8;
-            this.rbEtiqueta_6.TabStop = true;
-            this.rbEtiqueta_6.Text = "6 etiquetas";
-            this.rbEtiqueta_6.UseVisualStyleBackColor = true;
-            // 
-            // rbEtiqueta_8
-            // 
-            this.rbEtiqueta_8.AutoSize = true;
-            this.rbEtiqueta_8.Location = new System.Drawing.Point(242, 183);
-            this.rbEtiqueta_8.Name = "rbEtiqueta_8";
-            this.rbEtiqueta_8.Size = new System.Drawing.Size(77, 17);
-            this.rbEtiqueta_8.TabIndex = 9;
-            this.rbEtiqueta_8.TabStop = true;
-            this.rbEtiqueta_8.Text = "8 etiquetas";
-            this.rbEtiqueta_8.UseVisualStyleBackColor = true;
             // 
             // lbQuarto
             // 
@@ -200,23 +178,55 @@
             "Oncologia",
             "Ortopedia ",
             "Otorrinolaringologia",
-            "Pediatria, PSI e UTI Pediátrica"});
+            "Pediatria, PSI e UTI Pediátrica",
+            "Proctologia",
+            "Radiologia Intervencionista",
+            "Reumatologia",
+            "Cirurgia de Mão"});
             this.cbClinica.Location = new System.Drawing.Point(124, 127);
             this.cbClinica.Name = "cbClinica";
             this.cbClinica.Size = new System.Drawing.Size(228, 21);
             this.cbClinica.TabIndex = 16;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(34, 176);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(106, 13);
+            this.label2.TabIndex = 17;
+            this.label2.Text = "Numero de Etiquetas";
+            // 
+            // cbNumeroEtiquetas
+            // 
+            this.cbNumeroEtiquetas.FormattingEnabled = true;
+            this.cbNumeroEtiquetas.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10"});
+            this.cbNumeroEtiquetas.Location = new System.Drawing.Point(231, 168);
+            this.cbNumeroEtiquetas.Name = "cbNumeroEtiquetas";
+            this.cbNumeroEtiquetas.Size = new System.Drawing.Size(121, 21);
+            this.cbNumeroEtiquetas.TabIndex = 18;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(694, 269);
+            this.Controls.Add(this.cbNumeroEtiquetas);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.cbClinica);
             this.Controls.Add(this.cbExame);
             this.Controls.Add(this.lbAndar);
             this.Controls.Add(this.lbQuarto);
-            this.Controls.Add(this.rbEtiqueta_8);
-            this.Controls.Add(this.rbEtiqueta_6);
             this.Controls.Add(this.lbTitulo);
             this.Controls.Add(this.lblError);
             this.Controls.Add(this.label1);
@@ -239,12 +249,12 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Label lblError;
         private System.Windows.Forms.Label lbTitulo;
-        private System.Windows.Forms.RadioButton rbEtiqueta_6;
-        private System.Windows.Forms.RadioButton rbEtiqueta_8;
         private System.Windows.Forms.Label lbQuarto;
         private System.Windows.Forms.Label lbAndar;
         private System.Windows.Forms.ComboBox cbExame;
         private System.Windows.Forms.ComboBox cbClinica;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox cbNumeroEtiquetas;
 
     }
 }
