@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.btImprimir = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.txbRh = new System.Windows.Forms.TextBox();
@@ -41,33 +42,34 @@
             this.cbExame = new System.Windows.Forms.ComboBox();
             this.cbClinica = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.cbNumeroEtiquetas = new System.Windows.Forms.ComboBox();
+            this.txbQuantidade = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btImprimir
             // 
-            this.btImprimir.Location = new System.Drawing.Point(192, 216);
+            this.btImprimir.Location = new System.Drawing.Point(277, 216);
             this.btImprimir.Name = "btImprimir";
             this.btImprimir.Size = new System.Drawing.Size(75, 23);
             this.btImprimir.TabIndex = 5;
             this.btImprimir.Text = "Imprimir";
             this.btImprimir.UseVisualStyleBackColor = true;
             this.btImprimir.Click += new System.EventHandler(this.btImprimir_Click);
+            this.btImprimir.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txbQuantidade_KeyPress);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(31, 74);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(70, 13);
+            this.label1.Size = new System.Drawing.Size(23, 13);
             this.label1.TabIndex = 11;
-            this.label1.Text = "Informe o RH";
+            this.label1.Text = "RH";
             // 
             // txbRh
             // 
-            this.txbRh.Location = new System.Drawing.Point(124, 74);
+            this.txbRh.Location = new System.Drawing.Point(161, 74);
             this.txbRh.Name = "txbRh";
-            this.txbRh.Size = new System.Drawing.Size(143, 20);
+            this.txbRh.Size = new System.Drawing.Size(228, 20);
             this.txbRh.TabIndex = 1;
             this.txbRh.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txbRh_KeyPress);
             // 
@@ -106,14 +108,14 @@
             this.lbQuarto.AutoSize = true;
             this.lbQuarto.Location = new System.Drawing.Point(31, 135);
             this.lbQuarto.Name = "lbQuarto";
-            this.lbQuarto.Size = new System.Drawing.Size(38, 13);
+            this.lbQuarto.Size = new System.Drawing.Size(40, 13);
             this.lbQuarto.TabIndex = 10;
-            this.lbQuarto.Text = "Clinica";
+            this.lbQuarto.Text = "Clínica";
             // 
             // lbAndar
             // 
             this.lbAndar.AutoSize = true;
-            this.lbAndar.Location = new System.Drawing.Point(380, 135);
+            this.lbAndar.Location = new System.Drawing.Point(405, 135);
             this.lbAndar.Name = "lbAndar";
             this.lbAndar.Size = new System.Drawing.Size(39, 13);
             this.lbAndar.TabIndex = 14;
@@ -131,16 +133,17 @@
             "CIRURGIA VASCULAR",
             "CATETERISMO CARDÍACO",
             "ULTRASSOM COM PUNÇÃO"});
-            this.cbExame.Location = new System.Drawing.Point(446, 127);
+            this.cbExame.Location = new System.Drawing.Point(450, 127);
             this.cbExame.Name = "cbExame";
             this.cbExame.Size = new System.Drawing.Size(208, 21);
             this.cbExame.TabIndex = 15;
+            this.cbExame.Format += new System.Windows.Forms.ListControlConvertEventHandler(this.cbExame_Format);
             // 
             // cbClinica
             // 
             this.cbClinica.FormattingEnabled = true;
             this.cbClinica.Items.AddRange(new object[] {
-            " Pronto Socorro Adulto ",
+            "Pronto Socorro Adulto ",
             "Acupuntura",
             "Alergia ",
             "Amb. Desc. Carrão",
@@ -183,45 +186,37 @@
             "Radiologia Intervencionista",
             "Reumatologia",
             "Cirurgia de Mão"});
-            this.cbClinica.Location = new System.Drawing.Point(124, 127);
+            this.cbClinica.Location = new System.Drawing.Point(161, 127);
             this.cbClinica.Name = "cbClinica";
             this.cbClinica.Size = new System.Drawing.Size(228, 21);
             this.cbClinica.TabIndex = 16;
+            this.cbClinica.Format += new System.Windows.Forms.ListControlConvertEventHandler(this.cbClinica_Format);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(34, 176);
+            this.label2.Location = new System.Drawing.Point(31, 176);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(106, 13);
+            this.label2.Size = new System.Drawing.Size(124, 13);
             this.label2.TabIndex = 17;
-            this.label2.Text = "Numero de Etiquetas";
+            this.label2.Text = "Quantidade de Etiquetas";
             // 
-            // cbNumeroEtiquetas
+            // txbQuantidade
             // 
-            this.cbNumeroEtiquetas.FormattingEnabled = true;
-            this.cbNumeroEtiquetas.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10"});
-            this.cbNumeroEtiquetas.Location = new System.Drawing.Point(231, 168);
-            this.cbNumeroEtiquetas.Name = "cbNumeroEtiquetas";
-            this.cbNumeroEtiquetas.Size = new System.Drawing.Size(121, 21);
-            this.cbNumeroEtiquetas.TabIndex = 18;
+            this.txbQuantidade.Location = new System.Drawing.Point(162, 168);
+            this.txbQuantidade.Name = "txbQuantidade";
+            this.txbQuantidade.Size = new System.Drawing.Size(78, 20);
+            this.txbQuantidade.TabIndex = 18;
+            this.txbQuantidade.TabStop = false;
+          
+            this.txbQuantidade.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txbQuantidade_KeyPress);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(694, 269);
-            this.Controls.Add(this.cbNumeroEtiquetas);
+            this.ClientSize = new System.Drawing.Size(737, 269);
+            this.Controls.Add(this.txbQuantidade);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.cbClinica);
             this.Controls.Add(this.cbExame);
@@ -232,8 +227,9 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txbRh);
             this.Controls.Add(this.btImprimir);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Etiquetas";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -254,7 +250,7 @@
         private System.Windows.Forms.ComboBox cbExame;
         private System.Windows.Forms.ComboBox cbClinica;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox cbNumeroEtiquetas;
+        private System.Windows.Forms.TextBox txbQuantidade;
 
     }
 }

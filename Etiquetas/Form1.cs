@@ -22,7 +22,6 @@ namespace Etiquetas
 
         int status;
         Paciente detiq;
-        Paciente detiq2;
 
 
         //HospubDados dados = new HospubDados();
@@ -42,12 +41,12 @@ namespace Etiquetas
         {
             public int cd_prontuario { get; set; }
             public string nm_nome { get; set; }
-            public int cd_rf_matricula { get; set; }
+
             public string in_sexo { get; set; }
             public string nm_mae { get; set; }
             public string dt_data_nascimento { get; set; }
             public int nr_idade { get; set; }
-           
+
 
 
         }
@@ -72,7 +71,7 @@ namespace Etiquetas
             this.txbRh.Text = "";
             this.cbExame.ResetText();
             this.cbClinica.ResetText();
-            this.cbNumeroEtiquetas.ResetText();
+            this.txbQuantidade.Text = "";
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -80,9 +79,9 @@ namespace Etiquetas
             try
             {
                 string NumeroDeEtiquetas = "";
-                if (cbNumeroEtiquetas.InvokeRequired)
+                if (txbQuantidade.InvokeRequired)
                 {
-                    cbNumeroEtiquetas.Invoke(new MethodInvoker(delegate { NumeroDeEtiquetas = cbNumeroEtiquetas.Text; }));
+                    txbQuantidade.Invoke(new MethodInvoker(delegate { NumeroDeEtiquetas = txbQuantidade.Text; }));
                 }
 
                 int rh = Convert.ToInt32(txbRh.Text);
@@ -106,7 +105,7 @@ namespace Etiquetas
                     }
 
 
-                   
+
                     PrintDialog printDialog1 = new PrintDialog();
                     printDialog1.Document = printDocument1;
                     DialogResult result = printDialog1.ShowDialog();
@@ -116,12 +115,12 @@ namespace Etiquetas
                         while (maxCount > count)
                         {
                             printDocument1.DefaultPageSettings.PaperSize = new System.Drawing.Printing.PaperSize("Custom2", 295, 98);
-                           //printDialog1.PrinterSettings.DefaultPageSettings.PaperSize = new System.Drawing.Printing.PaperSize("Custom2", 295, 98);
+                            //printDialog1.PrinterSettings.DefaultPageSettings.PaperSize = new System.Drawing.Printing.PaperSize("Custom2", 295, 98);
                             printDocument1.Print();
                             count++;
                         }
 
-             
+
 
 
 
@@ -144,7 +143,7 @@ namespace Etiquetas
 
             }
         }
-     
+
 
         private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
@@ -174,7 +173,7 @@ namespace Etiquetas
 
             //e.PageSettings.PaperSize = new System.Drawing.Printing.PaperSize("Custom2", 295, 98);//900 é a largura da página
             //printDocument1.DefaultPageSettings.PaperSize = new System.Drawing.Printing.PaperSize("Custom2", 295, 98);
-           // printDialog1.PrinterSettings.DefaultPageSettings.PaperSize = new System.Drawing.Printing.PaperSize("Custom2", 295, 98);
+            // printDialog1.PrinterSettings.DefaultPageSettings.PaperSize = new System.Drawing.Printing.PaperSize("Custom2", 295, 98);
             using (Graphics g = e.Graphics)
             {
                 using (Font fnt = new Font("Arial", 12))
@@ -182,27 +181,27 @@ namespace Etiquetas
 
                     int startXEsquerda = 5;
                     int starty = 0;//distancia das linhas
-                   
-
-                   
-                        string nomep1 = detiq.nm_nome;
-                        int contN = nomep1.Length;
-                        string nomep = detiq.nm_nome.Substring(0, 26);
-                        string nomeCompos = nomep1.Substring(26);
-
-
-                        g.DrawString("Nome: " + detiq.nm_nome, new Font("Arial", 7, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 5);
-                        g.DrawString("RH: " + txbRh.Text + "       DN: " + detiq.dt_data_nascimento + "       SEXO: " + detiq.in_sexo, new Font("Arial", 7, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 20);
-                        g.DrawString("NOME DA MÃE: " + detiq.nm_mae, new Font("Arial", 7, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 35);
-                       
-                        g.DrawString("Exame: " + Exame + " Data: " + dataNormal, new Font("Arial", 7, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 50);
-                        g.DrawString("Clinica: " + Clinica, new Font("Arial", 7, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 65);
-                        g.DrawString("Pedido: " + codigo, new Font("Arial", 7, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 80);
-                       
 
 
 
-                    
+                    string nomep1 = detiq.nm_nome;
+                    int contN = nomep1.Length;
+                    string nomep = detiq.nm_nome.Substring(0, 26);
+                    string nomeCompos = nomep1.Substring(26);
+
+
+                    g.DrawString("NOME: " + detiq.nm_nome, new Font("Arial", 7, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 5);
+                    g.DrawString("RH: " + txbRh.Text + "       DN: " + detiq.dt_data_nascimento + "       SEXO: " + detiq.in_sexo, new Font("Arial", 7, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 20);
+                    g.DrawString("NOME DA MÃE: " + detiq.nm_mae, new Font("Arial", 7, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 35);
+
+                    g.DrawString("EXAME: " + Exame + " DATA: " + dataNormal, new Font("Arial", 7, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 50);
+                    g.DrawString("CLÍNICA: " + Clinica, new Font("Arial", 7, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 65);
+                    g.DrawString("PEDIDO: " + codigo, new Font("Arial", 7, FontStyle.Regular), System.Drawing.Brushes.Black, startXEsquerda, starty + 80);
+
+
+
+
+
                 }
             }
 
@@ -218,8 +217,63 @@ namespace Etiquetas
                 btImprimir_Click(sender, e);
 
             }
+
+            // Allow control characters (like backspace)
+            if (char.IsControl(e.KeyChar))
+            {
+                return;
+            }
+
+            // Allow digits (0-9) only
+            if (!char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Suppress the key press event
+            }
+        }
+
+        private void cbClinica_Format(object sender, ListControlConvertEventArgs e)
+        {
+            // Convert the item to uppercase
+            e.Value = e.ListItem.ToString().ToUpper();
+        }
+
+        private void cbExame_Format(object sender, ListControlConvertEventArgs e)
+        {
+            // Convert the item to uppercase
+            e.Value = e.ListItem.ToString().ToUpper();
         }
 
 
+        private void txbQuantidade_KeyPress(object sender, KeyPressEventArgs e)
+        {
+          
+            // Allow control characters (like backspace)
+            if (char.IsControl(e.KeyChar))
+            {
+                return;
+            }
+
+            // Allow digits (0-9) only
+            if (!char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Suppress the key press event
+            }
+
+        
+        // Check if the resulting value exceeds 20
+    TextBox textBox = sender as TextBox;
+    if (textBox != null && !e.Handled)
+    {
+        string newText = textBox.Text.Insert(textBox.SelectionStart, e.KeyChar.ToString());
+        int result = Convert.ToInt32(newText);
+        if (  result > 20)
+        {
+            e.Handled = true; // Suppress the key press event
+            MessageBox.Show("A quantidade de etiquetas não pode ser maior que 20.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
     }
+
+        }
+    }
+
 }

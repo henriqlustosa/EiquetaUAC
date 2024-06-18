@@ -15,9 +15,6 @@ G:\OneDrive - Default Directory\OneDrive - rede.sp\Etiqueta_UAC\EiquetaUAC\Etiqu
 G:\OneDrive - Default Directory\OneDrive - rede.sp\Etiqueta_UAC\EiquetaUAC\Etiquetas\obj\x86\Release\Etiquetas.pdb
 G:\OneDrive - Default Directory\OneDrive - rede.sp\Etiqueta_UAC\EiquetaUAC\Etiquetas\bin\x86\Release\Etiquetas.exe
 G:\OneDrive - Default Directory\OneDrive - rede.sp\Etiqueta_UAC\EiquetaUAC\Etiquetas\bin\x86\Release\Etiquetas.pdb
-G:\OneDrive - Default Directory\OneDrive - rede.sp\Etiqueta_UAC\EiquetaUAC\Etiquetas\bin\x86\Release\Newtonsoft.Json.Compact.pdb
-G:\OneDrive - Default Directory\OneDrive - rede.sp\Etiqueta_UAC\EiquetaUAC\Etiquetas\bin\x86\Release\Newtonsoft.Json.Compact.xml
-G:\OneDrive - Default Directory\OneDrive - rede.sp\Etiqueta_UAC\EiquetaUAC\Etiquetas\bin\x86\Release\GenCode128.pdb
 G:\OneDrive - Default Directory\OneDrive - rede.sp\Etiqueta_UAC\EiquetaUAC\Etiquetas\obj\x86\Release\ResolveAssemblyReference.cache
 G:\OneDrive - Default Directory\OneDrive - rede.sp\Etiqueta_UAC\EiquetaUAC\Etiquetas\obj\x86\Release\Etiquetas.Form1.resources
 G:\OneDrive - Default Directory\OneDrive - rede.sp\Etiqueta_UAC\EiquetaUAC\Etiquetas\obj\x86\Release\Etiquetas.Properties.Resources.resources
