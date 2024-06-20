@@ -184,10 +184,7 @@ namespace Etiquetas
 
 
 
-                    string nomep1 = detiq.nm_nome;
-                    int contN = nomep1.Length;
-                    string nomep = detiq.nm_nome.Substring(0, 26);
-                    string nomeCompos = nomep1.Substring(26);
+                 
 
 
                     g.DrawString("NOME: " + detiq.nm_nome, new Font("Arial", 7, FontStyle.Bold), System.Drawing.Brushes.Black, startXEsquerda, starty + 5);
