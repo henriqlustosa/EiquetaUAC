@@ -87,7 +87,7 @@ namespace Etiquetas
                 int rh = Convert.ToInt32(txbRh.Text);
                 int count = 0;
                 //detiq = dados.getDados(be);
-                string url = "http://10.48.21.64:5000/hspmsgh-api/pacientes/paciente/" + rh;
+                string url = "http://10.48.21.64:5003/hspmsgh-api/pacientes/paciente/" + rh;
                 int maxCount = Convert.ToInt32(NumeroDeEtiquetas);
                 WebRequest request = WebRequest.Create(url);
                 try
